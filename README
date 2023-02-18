@@ -1,0 +1,58 @@
+1) Limbajul folosit: C++
+    Am ales sa folosesc C++ datorita structurilor de date implementate
+(map, queue) si pentru a encapsula metodele ce opereaza pe clienti sau
+pe un grup de abonati
+
+2) Protocolul de transmisie folosit
+    Mai intai, transmit 4 octeti ce reprezinta lungimea mesajului ce va urma.
+    Apoi, transmit mesajul.
+    La receptor, incerc sa citesc 4 octeti. Daca citesc numai 0, atunci inseamna
+ca s-a inchis conexiunea. Altfel, citim numarul de octeti indicat de primii 4.
+
+3) Clase folosite
+ - topicT, ID_T 
+    String-uri de lungime fixa(50, respectiv 10) pentru a reprezenta un topic, 
+respectiv un ID de client
+ - TCPmessage
+    Un mesaj transmis de la un client TCP la server pentru abonare sau 
+dezabonare de la un topic
+ - UDPmessage
+    Un mesaj transmis de la server la clientii abonat la un topic, creat din
+datele primite de la un client UDP.
+ - Client
+    Un obiect creat pentru fiecare ID distinct ce se conecteaza cel putin 
+o data la server. Contine de o coada pentru a memora mesajele primite de la
+topicuri cu abonament cu SF(store-and-forward) cand clientul este deconectat
+ - SubscriptionGroup
+    Un obiect este creat pentru fiecare topic unic la care un utilizator 
+doreste sa se aboneze.
+
+4) Utilizare
+    Initializare server:
+    - server <PORT_DORIT>
+        *PORT_DORIT = portul folosit pentru a primi mesaje
+    Serverul primeste mesaje cu orice IP.
+
+    Comenzi server:
+    
+    -exit - inchide serverul si toti subscriberii conectati
+
+    Initializare (client TCP al seerverului)
+    - subscriber <ID_CLIENT> <IP_SERVER> <PORT_SERVER>
+        *ID_CLIENT = id-ul clientului, maxim 10 caractere
+        *IP_SERVER = ip-ul server-ului in format 
+        *PORT_SERVER = portul server-ului
+    
+    Comenzi subscriber:
+
+
+    -subscribe <TOPIC> <SF> 
+        - anunta serverul ca clientul doreste sa se aboneze la mesaje pe topic-ul TOPIC 
+        SF = 1 -> mesajele primite cand clientul este deconectat sunt memorate si afisate la reconectare
+        SF = 0 -> mesajele primite cand clientul este deconectat nu sunt memorate 
+    -unsubscribe <TOPIC> - anunta serverul ca clientul dorete sa se dezaboneze de la topic-ul TOPIC
+    -exit - comanda va fi folosita pentru deconectarea clientului de la server si inchiderea sa
+
+
+    
+    
